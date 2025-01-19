@@ -1,4 +1,4 @@
-# README
+# **Full End-to-End ML Sentiment Analysis API**
 
 This repository contains a collection of files and kustomization overlays for managing and deploying applications using Kustomization and Azure Kubernetes Services. The primary goal of this project is to set up a prediction endpoint using a pre-trained model from HuggingFace, which involves deploying a machine learning model to predict a positive or negative sentiment based on a text input. This lab focuses on setting up the API, building a Docker Image, and moving between development (using Minikube) and production (using Azure). 
 

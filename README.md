@@ -1,6 +1,4 @@
-# Full End-to-End Machine Learning API
-
-<!-- markdownlint-disable MD028 -->
+# **End-to-End ML Sentiment Analysis API**
 
 <p align="center">
     <!--Hugging Face-->
@@ -31,128 +29,51 @@
         <img src="https://user-images.githubusercontent.com/1393562/197682977-ff2ffb72-cd96-4f92-94d9-2624e29098ee.svg" width=7% alt="Grafana">
 </p>
 
-
-# **Sentiment Analysis API**
-
 ## **Overview**
-This project demonstrates the deployment of a fully functional machine learning API for sentiment analysis using the **DistilBERT** model. The API accepts text inputs and provides predictions on whether the sentiment is **positive** or **negative** with confidence scores for each label. Built using **FastAPI**, the application is containerized with **Docker** and deployed on **Azure Kubernetes Service (AKS)** for scalability and performance.
+This repository hosts an end-to-end machine learning API for sentiment analysis using **HuggingFace’s DistilBERT** model. The API predicts whether input text has a **positive** or **negative** sentiment and provides confidence scores. Deployed on **Azure Kubernetes Service (AKS)**, the application is built with **FastAPI**, containerized with **Docker**, and optimized for performance with **Redis** caching and **k6** load testing.
 
 ---
 
-## **Features**
-- Accepts batched text input and returns sentiment predictions with confidence scores.
-- Leverages the **HuggingFace Transformers** library for simplified model inference.
-- Designed for efficient CPU-based inference with pre-trained **DistilBERT** hosted on HuggingFace.
-- Includes robust input/output validation with **Pydantic models**.
-- Supports horizontal scaling with Kubernetes and caching with **Redis** to minimize latency.
-- Tested with **k6** for load testing and monitored using **Grafana** for performance insights.
+## **Core Features**
+- Efficient **DistilBERT**-based sentiment analysis using HuggingFace Transformers.
+- **FastAPI** application serving batched predictions via a user-friendly REST API.
+- Scalable deployments with **Kubernetes** for development (Minikube) and production (AKS).
+- Optimized latency with **Redis** caching and robust load testing using **k6**.
+- Real-time monitoring and resource utilization insights via **Grafana** dashboards.
 
 ---
 
-## **API Specifications**
-
-### **Input Model**
-The API accepts input in the following format:
-
-```json
-{
-    "text": ["example 1", "example 2"]
-}
-```
-
-### **Output Model**
-The API returns predictions in the following format:
-
-```json
-{
-    "predictions": [
-        [
-            {
-                "label": "POSITIVE",
-                "score": 0.7127904295921326
-            },
-            {
-                "label": "NEGATIVE",
-                "score": 0.2872096002101898
-            }
-        ],
-        [
-            {
-                "label": "POSITIVE",
-                "score": 0.7186233401298523
-            },
-            {
-                "label": "NEGATIVE",
-                "score": 0.2813767194747925
-            }
-        ]
-    ]
-}
-```
+## **How It Works**
+1. **Text Input**: Submit a batch of text inputs (e.g., `["I love you", "I hate you"]`).
+2. **Sentiment Prediction**: Receive a confidence score for **POSITIVE** and **NEGATIVE** sentiments for each text.
+3. **High Scalability**: Supports increased traffic through Kubernetes horizontal scaling and baked-in model optimizations.
 
 ---
 
-## **Setup and Deployment**
-
-### **1. Prerequisites**
-- Install dependencies with **Poetry**:
-  ```bash
-  poetry install
-  ```
-- Pull the pre-trained DistilBERT model locally:
-  ```bash
-  git lfs install
-  git clone https://huggingface.co/winegarj/distilbert-base-uncased-finetuned-sst2
-  ```
-  Add the model files to `.gitignore` to avoid unnecessary commits.
-
-### **2. Running Locally**
-- Build and deploy the application locally using **kustomize**:
-  ```bash
-  kustomize build overlays/dev | kubectl apply -f -
-  ```
-
-### **3. Deployment to AKS**
-- Push the Docker image to **Azure Container Registry (ACR)**:
-  ```bash
-  docker build -t <acr_namespace>/project:latest .
-  docker push <acr_namespace>/project:latest
-  ```
-- Deploy the application to **Azure Kubernetes Service**:
-  - Adjust the `kustomize` virtual service to route paths for `/project` and `/lab`.
-  - Apply the updated configuration:
-    ```bash
-    kubectl apply -k overlays/prod
-    ```
+## **For Setup and Deployment**
+Detailed setup instructions, deployment steps for **Minikube** and **AKS**, and API testing guidelines are provided in the [detailed README](mlapi/README.md).
 
 ---
 
-## **Testing and Monitoring**
+## **Key Performance Metrics**
+- Achieves ~40 requests per second with 99th-percentile latency below 2 seconds during load testing.
+- Minimal resource usage spikes observed, even with a finetuned **DistilBERT** model.
 
-### **1. Unit Testing**
-- Ensure the application works as expected with **pytest**:
-  ```bash
-  poetry run pytest
-  ```
-
-### **2. Load Testing**
-- Test API performance using **k6** with the provided `load.js` script:
-  ```bash
-  k6 run load.js
-  ```
-
-### **3. Monitoring**
-- Use **Grafana** to monitor system performance during load testing.
-- Capture key metrics such as latency, request rates, and resource utilization.
+![K6 Summary Statistics](mlapi/k6_performance_summary.png "K6 Performance Metrics")
 
 ---
 
-## **Model Background**
-The model is based on **DistilBERT**, fine-tuned for sentiment analysis. It was trained on a GPU-enabled system using two A4000 GPUs with the following configuration:
-- **Batch size**: 256
-- **Sequence length**: Up to 512 tokens
-- **Training time**: 5 minutes
+## **Technologies Used**
+- **HuggingFace Transformers** for pre-trained model inference.
+- **FastAPI** for lightweight, high-performance RESTful API development.
+- **Pydantic** for robust input/output data validation and serialization.
+- **Docker** for containerization and portability.
+- **Kubernetes** (Minikube for development, AKS for production) for orchestration.
+- **Redis** for caching frequently accessed data.
+- **k6** for stress testing and performance optimization.
+- **Grafana** for system monitoring and resource utilization insights.
 
-Training on CPUs is not recommended due to the significant computational requirements. The HuggingFace Transformers library provides a pre-configured prediction pipeline for efficient inference.
+---
 
-### See `mlapi` for API development
+## **Get Started**
+To get started, clone the repository and follow the setup steps provided in the detailed guide: [Full End-to-End ML API Setup Guide](mlapi/README.md).
