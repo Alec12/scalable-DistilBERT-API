@@ -1,0 +1,27 @@
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata: 
+  name: external-access
+spec:
+  hosts:
+    - alecarnassi.mids255.com
+  gateways:
+    - istio-ingress/alecarnassi-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /project
+      route:
+        - destination:
+            host: project-prediction-service
+            port:
+              number: 8000
+    - match:
+        - uri:
+            prefix: /lab
+      route:
+        - destination:
+            host: lab-prediction-service
+            port:
+              number: 8000

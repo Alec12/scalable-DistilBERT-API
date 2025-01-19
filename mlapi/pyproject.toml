@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "src"
+version = "0.1.0"
+description = ""
+authors = ["Alec Naidoo <alecarnassi@berkeley.edu>"]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.12"
+transformers = "^4.46.2"
+torch = [
+  {version = "^2.5.1", source = "pypi", "platform" = "win32"},
+  {version = "^2.5.1", source = "pypi", "platform" = "linux"},
+  {version = "^2.5.1", source = "pypi", "platform" = "darwin",  markers = "platform_machine == 'x86_64'" },
+  {version = "^2.5.1", source = "pypi", "platform" = "darwin",  markers = "platform_machine == 'arm64'" }
+]
+fastapi-cache2 = {extras = ["redis"], version = "^0.1.9"}
+fastapi = {extras = ["standard"], version = "^0.115.5"}
+
+[tool.poetry.group.dev.dependencies]
+datasets = "^3.1"
+scikit-learn = "^1.5.2"
+pytest = "^8.3"
+ruff = "^0.7"
+pre-commit = "^4.0"
+evaluate = "^0.4"
+accelerate = "^1.1.1"
+python-dotenv = "^1.0.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.source]]
+name = "pytorch-cuda"
+url = "https://download.pytorch.org/whl/cu121"
+priority = "explicit"
+
+[[tool.poetry.source]]
+name = "pypi"
+priority = "primary"
